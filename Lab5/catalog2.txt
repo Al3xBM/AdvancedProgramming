@@ -1,0 +1,13 @@
+ cat2
+java1
+Java Course 1
+https://profs.info.uaic.ro/~acf/java/slides/en/intro_slide_en.pdf
+{key1=value1, key2=value2, key3=value3}
+java2
+Java Course 2
+https://profs.info.uaic.ro/~acf/java/slides/en/intro_slide_en.pdf
+{}
+java3
+Java Course 3
+https://profs.info.uaic.ro/~acf/java/slides/en/intro_slide_en.pdf
+{}

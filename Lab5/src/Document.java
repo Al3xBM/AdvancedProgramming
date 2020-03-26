@@ -16,6 +16,10 @@ public class Document implements Serializable {
 
     public Document() {}
 
+    public Document(String id) {
+        this.id = id;
+    }
+
     public Document(String id, String name, String location) {
         this.id = id;
         this.name = name;

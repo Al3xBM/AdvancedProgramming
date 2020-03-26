@@ -26,6 +26,7 @@ public class Catalog implements Serializable {
     public void add(Document doc) {
         documents.add(doc);
     }
+
     public Document findById(String id) {
         return documents.stream()
                 .filter(d -> d.getId().equals(id)).findFirst().orElse(null);
