@@ -9,6 +9,8 @@ public class ConfigPanel extends JPanel {
     JComboBox colorCombo; // the color of the shape
     JLabel sizeLabel;
     JSpinner sizeField;
+    JLabel shapeLabel;
+    JSpinner shapeField;
     public ConfigPanel(MainFrame frame) {
         this.frame = frame;
         init();
@@ -21,6 +23,10 @@ public class ConfigPanel extends JPanel {
         sizeLabel = new JLabel("Shape size:");
         sizeField = new JSpinner(new SpinnerNumberModel(0, 0, 500, 10));
         sizeField.setValue(45); //default number of sides
+        shapeLabel = new JLabel("Shape:");
+        String[] shapeNames = {"Any", "Triangle", "Square", "Pentagon", "Hexagon"};
+        shapeField = new JSpinner( new SpinnerListModel(shapeNames));
+        shapeField.setPreferredSize(new Dimension(100, 25));
         //create the colorCombo, containing the values: Random and Black
         Random rng = new Random();
         float r = rng.nextFloat();
@@ -34,6 +40,8 @@ public class ConfigPanel extends JPanel {
 
 
  //...TODO
+        add(shapeLabel);
+        add(shapeField);
         add(sizeLabel);
         add(sizeField);
         add(sidesLabel); //JPanel uses FlowLayout by default
