@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Board {
@@ -18,6 +19,10 @@ public class Board {
 
     public Token getToken(int poz){
         return tokens.get(poz);
+    }
+
+    public Token getMaxToken(){
+        return tokens.get(tokens.size()-1);
     }
 
     public void removeToken(int val){

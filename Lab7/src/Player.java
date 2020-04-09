@@ -1,133 +1,36 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Player implements Runnable {
-    private String name;
-    private Board board;
-    private int nr_blank = 0;
-    private volatile boolean turn;
-    private volatile boolean win = false;
-    private volatile boolean lose = false;
-    private volatile boolean draw = false;
+public interface Player extends Runnable{
     Object lock = new Object();
 
-    public boolean isLose() {
-        return lose;
-    }
+    void setGame(Game game);
 
-    public void setLose(boolean lose) {
-        this.lose = lose;
-    }
+    String getType();
 
-    List<Token> extracted = new ArrayList<>();
+    void setBoard(Board board);
 
-    public Player(){}
+    boolean isLose();
 
-    public Player(String name) {
-        this.name = name;
-    }
+    void setLose(boolean lose);
 
+    List<Token> getExtracted() ;
 
+    void setTurn(boolean turn);
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
+    int getNr_blank();
 
-    public List<Token> getExtracted(){
-        return extracted;
-    }
+    boolean isWin();
 
-    public void setTurn(boolean turn){
-        this.turn = turn;
-    }
+    void setWin(boolean win);
 
-    public int getNr_blank(){
-        return nr_blank;
-    }
+    boolean isDraw();
 
-    public boolean isWin() {
-        return win;
-    }
+    void setDraw(boolean draw);
 
-    public void setWin(boolean win) {
-        this.win = win;
-    }
+    String getName();
 
-    public boolean isDraw() {
-        return draw;
-    }
+    boolean isTurn();
 
-    public void setDraw(boolean draw) {
-        this.draw = draw;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isTurn() {
-        return turn;
-    }
-
-    @Override
-    public synchronized void run() {
-        Scanner keyboard = new Scanner(System.in);
-        int nr, check;
-        // works as long as someone doesn't win
-        while( true ) {
-            while( !turn ){
-                // if someone won, the other lost
-                // i exit while and terminate the thread
-                if( win || lose )
-                    break;
-                try {
-                    synchronized(lock){
-                        lock.wait();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            // if someone won, the other lost
-            // i exit while and terminate the thread
-            if( win || lose )
-                break;
-            // loops until player chooses a valid token
-            while (true) {
-                System.out.print("Player: " + this.getName() + ". Select your token: ");
-                nr = keyboard.nextInt();
-                check = board.containsToken(nr);
-                switch (check) {
-                    case 0:
-                        System.out.println("Token does not exist on the board");
-                        break;
-                    case 1:
-                        extracted.add(new Token(nr));
-                        board.removeToken(nr);
-                        break;
-                    case 2:
-                        extracted.add(new Token("yes", nr));
-                        board.removeToken(nr);
-                }
-                if (check != 0)
-                    break;
-            }
-            //prints remaining tokens
-            for( Token i : board.getTokens() ){
-                System.out.print( i.getNumber() + " " );
-            }
-            System.out.println();
-            // sorts extracted tokens
-            extracted = extracted.stream().sorted(Comparator.comparing(Token::getNumber)).collect(Collectors.toList());
-
-            // notifies that his turn ended
-            synchronized(lock){
-                this.setTurn(false);
-                lock.notifyAll();
-            }
-            if( win )
-                break;
-        }
-        System.out.println("Did "+ this.getName() + " win? "+ win);
-    }
+    void run();
 }
