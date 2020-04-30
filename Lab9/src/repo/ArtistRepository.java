@@ -11,14 +11,9 @@ import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 
-@NamedQuery(
-        name="artistsByName",
-        query="select a from ArtistsEntity a where a.name like :name"
-)
+public class ArtistRepository extends AbstractRepository<ArtistsEntity> {
 
-public class ArtistRepository {
-
-    public void create(Entity e){
+    public void create(ArtistsEntity e){
         // gets an EntityManager from PersistenceUtil.getInstance().getEntityMan()
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();

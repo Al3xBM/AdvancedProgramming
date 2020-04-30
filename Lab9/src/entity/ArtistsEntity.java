@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(
+        name="artistsByName",
+        query="select a from ArtistsEntity a where a.name like :name"
+)
 @Table(name = "ARTISTS", schema = "MUSICALBUMS", catalog = "")
 public class ArtistsEntity {
     private long id;

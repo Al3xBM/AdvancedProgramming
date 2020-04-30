@@ -16,8 +16,7 @@ public class PersistenceUtil {
     // initializes factory asa an EntityManagerFactory for MusicAlbumsPU
     private PersistenceUtil()
     {
-        factory =
-                Persistence.createEntityManagerFactory(
+        factory = Persistence.createEntityManagerFactory(
                         "MusicAlbumsPU");
     }
 

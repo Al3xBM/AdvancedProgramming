@@ -4,6 +4,18 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name="findByArtist",
+                query = "select c from ChartEntity c where c.artistName = :artname"),
+        @NamedQuery(
+                name="artistRankings",
+                query = "select c.artistName from ChartEntity c order by place"),
+        @NamedQuery(
+                name="albumByID",
+                query = "select c from ChartEntity c where c.id = :id"),
+
+})
 @Table(name = "CHART", schema = "MUSICALBUMS", catalog = "")
 public class ChartEntity {
     private Long place;

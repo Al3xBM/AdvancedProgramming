@@ -1,9 +1,19 @@
 package entity;
 
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.util.Objects;
 
 @javax.persistence.Entity
+@NamedQueries({
+        @NamedQuery(
+                name="albumsByName",
+                query = "select a from AlbumsEntity a where a.name like :name"),
+        @NamedQuery(
+                name="albumsByArtist",
+                query = "select a from AlbumsEntity a where a.artist_id = :id"),
+})
 @javax.persistence.Table(name = "ALBUMS", schema = "MUSICALBUMS")
 public class AlbumsEntity {
     private long id;

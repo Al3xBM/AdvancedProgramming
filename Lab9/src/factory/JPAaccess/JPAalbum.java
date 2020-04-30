@@ -1,22 +1,16 @@
-package repo;
+package factory.JPAaccess;
 
 import entity.AlbumsEntity;
 import entity.ArtistsEntity;
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import factory.albumDAO;
 import util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import java.util.List;
 
-
-
-
-public class AlbumRepository extends AbstractRepository<AlbumsEntity> {
-
-    public void create(AlbumsEntity e){
+public class JPAalbum extends albumDAO {
+    @Override
+    public void create(AlbumsEntity e) {
         // gets an entitymanager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();
@@ -27,7 +21,8 @@ public class AlbumRepository extends AbstractRepository<AlbumsEntity> {
         em.close();
     }
 
-    public AlbumsEntity findById(int id){
+    @Override
+    public AlbumsEntity findById(int id) {
         // gets an entitymanager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();
@@ -39,7 +34,8 @@ public class AlbumRepository extends AbstractRepository<AlbumsEntity> {
         return alb;
     }
 
-    public List<AlbumsEntity> findByName(String name){
+    @Override
+    public List<AlbumsEntity> findByName(String name) {
         // gets an entity manager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();
@@ -51,7 +47,8 @@ public class AlbumRepository extends AbstractRepository<AlbumsEntity> {
         return albums;
     }
 
-    public List<AlbumsEntity> findByArtist(String name){
+    @Override
+    public List<AlbumsEntity> findByArtist(String name) {
         // gets an entity manager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();

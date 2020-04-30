@@ -2,21 +2,20 @@ package repo;
 
 import entity.AlbumsEntity;
 import entity.ArtistsEntity;
+import entity.ChartEntity;
 import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
 import util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.util.List;
 
 
 
-
-public class AlbumRepository extends AbstractRepository<AlbumsEntity> {
-
-    public void create(AlbumsEntity e){
+public class ChartsRepository extends AbstractRepository<ChartEntity> {
+    public void create(ChartEntity e){
         // gets an entitymanager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();
@@ -27,41 +26,47 @@ public class AlbumRepository extends AbstractRepository<AlbumsEntity> {
         em.close();
     }
 
-    public AlbumsEntity findById(int id){
+    @Override
+    public ChartEntity findById(int id) {
         // gets an entitymanager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();
         // finds one album by id
-        AlbumsEntity alb = em.find(AlbumsEntity.class, id);
+        List<ChartEntity> chrs = em.createNamedQuery("albumByID").setParameter("id", id).getResultList();
+        em.getTransaction().commit();
+
+        ChartEntity chr = new ChartEntity();
+        if( chrs.size() == 1 )
+            chr = chrs.get(0);
+
+        // closes entity manager
+        em.close();
+        return chr;
+    }
+
+    public List<ChartEntity> findByName(String name){
+        // gets an entitymanager by calling getentityman from persistenceutil
+        EntityManager em = PersistenceUtil.getInstance().getEntityMan();
+        em.getTransaction().begin();
+        // finds one album by id
+        List<ChartEntity> chr = em.createNamedQuery("findByArtist").setParameter("artname", name).getResultList();
         em.getTransaction().commit();
         // closes entity manager
         em.close();
-        return alb;
+        return chr;
     }
 
-    public List<AlbumsEntity> findByName(String name){
+    @SuppressWarnings({"JpaAttributeTypeInspection", "JpaAttributeMemberSignatureInspection"})
+    public List<String> getArtistRankings(){
         // gets an entity manager by calling getentityman from persistenceutil
         EntityManager em = PersistenceUtil.getInstance().getEntityMan();
         em.getTransaction().begin();
         // calls named query and stores result in albums
-        List<AlbumsEntity> albums = em.createNamedQuery("albumsByName").setParameter("name", name).getResultList();
+        List<String> artists = em.createNamedQuery("artistRankings").getResultList();
         // closes entity manager
         em.close();
         // returns AlbumsEntity list
-        return albums;
+        return artists;
     }
 
-    public List<AlbumsEntity> findByArtist(String name){
-        // gets an entity manager by calling getentityman from persistenceutil
-        EntityManager em = PersistenceUtil.getInstance().getEntityMan();
-        em.getTransaction().begin();
-        // finds an artist with the name provided
-        ArtistsEntity ar = em.find(ArtistsEntity.class, name);
-        // gets artist's id with .getId() method
-        long id = ar.getId();
-        // searches albums by artist's id
-        List<AlbumsEntity> albums = em.createNamedQuery("albumsByArtist").setParameter("id", id).getResultList();
-        // return albums list
-        return albums;
-    }
 }
