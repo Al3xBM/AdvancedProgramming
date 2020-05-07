@@ -2,8 +2,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
 public class GameClient {
@@ -12,18 +15,36 @@ public class GameClient {
 
     GameClient(){
         try{
-            Socket socket = new Socket(serverAddress, PORT);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
-
-            String request = "some req";
-            String response;
+            SocketChannel socket = SocketChannel.open( new InetSocketAddress("localhost", 8100));
             Scanner keyboard = new Scanner(System.in);
-            while( true ){
-                request = keyboard.nextLine();
-                out.println(request);
-                response = in.readLine();
-                System.out.println(response);
+            socket.configureBlocking(false);
+            while(true) {
+                String request = keyboard.nextLine();
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                buffer.put(request.getBytes() );
+                buffer.flip();
+                socket.write(buffer);
+
+                if( !request.equals("")) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                ByteBuffer in = ByteBuffer.allocate(1024);
+                socket.read(in);
+                String response = new String(in.array()).trim();
+
+                String aux = " ";
+                while( !aux.equals(response) ){
+                    System.out.println(response);
+                    aux = response;
+                    socket.read(in);
+                    response = new String(in.array()).trim();
+                }
+
                 if( request.equals("exit") || request.equals("stop")){
                     break;
                 }
