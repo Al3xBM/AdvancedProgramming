@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -49,7 +50,7 @@ public class PlayerController {
             return new ResponseEntity<String>("Player not found", new HttpHeaders(), HttpStatus.NOT_FOUND);
         } else {
             service.deletePlayer(p);
-            return new ResponseEntity<String>("Player has beem deleted", new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<String>("Player has been deleted", new HttpHeaders(), HttpStatus.OK);
         }
     }
 
