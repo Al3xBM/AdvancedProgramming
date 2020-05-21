@@ -20,7 +20,7 @@ public class SetLocale {
     private void setProperties(Locale locale){
 
         Properties prop = new Properties();
-        String path = "C:\\Users\\aliba\\IdeaProjects\\Lab13 not maven\\src\\res\\Message_"+locale.getISO3Language() + "_"+locale.getISO3Country()+".properties";
+        String path = "C:\\Users\\aliba\\IdeaProjects\\Lab13\\src\\res\\Message_ro.properties";
         System.out.println(path);
         try {
             FileOutputStream out = new FileOutputStream(path);
@@ -28,7 +28,7 @@ public class SetLocale {
             prop.load(in);
             in.close();
             prop.setProperty("prompt", "setLocale");
-            prop.setProperty("locales", Locale.getAvailableLocales().toString());
+            prop.setProperty("locales", Arrays.toString(Locale.getAvailableLocales()).replaceAll("\\[,|\\]", ""));
             prop.setProperty("locale.set", Locale.getDefault().toString());
             prop.setProperty("info", locale.getCountry() + "|" + locale.getLanguage() + "|"
                     + Currency.getInstance(locale).getDisplayName() + "|" + Arrays.toString(DateFormatSymbols.getInstance(locale).getWeekdays()).replaceAll("\\[,|\\]", "")

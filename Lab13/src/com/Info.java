@@ -17,7 +17,7 @@ public class Info {
     private String today;
 
     public Info(Locale locale){
-        ResourceBundle bundle = ResourceBundle.getBundle("res.Message", new Locale(locale.getISO3Language(), locale.getISO3Country()));
+        ResourceBundle bundle = ResourceBundle.getBundle("res.Message", locale);
 
         info = bundle.getString("info").split("\\|");
 
